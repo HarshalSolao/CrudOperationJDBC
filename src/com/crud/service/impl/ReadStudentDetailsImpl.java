@@ -58,18 +58,72 @@ public class ReadStudentDetailsImpl implements ReadStudentDetails {
 	@Override
 	public Set<Student> getStudentByGivenInfo(Student student) {
 		Set<Student> students = new HashSet<>();
+		boolean flag = false;
+
 		Connection con = ConnectionProvider.getConnection();
-		String sql = "";
+		String sql = "SELECT * FROM STUDENT where ";
+		
 		if (student.getId() > 0) {
-			sql = "SELECT * FROM STUDENT where id =" + student.getId();
-		} else if (student.getRollNo() != 0) {
-			sql = "SELECT * FROM STUDENT where rollNo =" + student.getRollNo();
-		} else if (student.getFirstName() != null) {
-			sql = "SELECT * FROM STUDENT where firstName =" + "'" + student.getFirstName() + "'";
-		} else if (student.getLastName() != null) {
-			sql = "SELECT * FROM STUDENT where lastName =" + "'" + student.getLastName() + "'";
-		} else if (student.getGender() != null) {
-			sql = "SELECT * FROM STUDENT where gender =" + "'" +student.getGender() + "'";
+			sql = sql + "id = " + student.getId();
+			flag = true;
+		}
+		if (student.getRollNo() != 0) {
+
+			if (flag) {
+				sql += " and rollNo =" + student.getRollNo();
+			} else {
+				sql += "rollNo =" + student.getRollNo();
+				flag = true;
+			}
+
+		}
+		if (student.getFirstName() != null) {
+			if (flag) {
+				sql += " and firstName =" + "'" + student.getFirstName() + "'";
+			} else {
+				sql += "firstName =" + "'" + student.getFirstName() + "'";
+				flag = true;
+			}
+		}
+		if (student.getLastName() != null) {
+			if (flag) {
+				sql += " and lastName =" + "'" + student.getLastName() + "'";
+			} else {
+				sql += "lastName =" + "'" + student.getLastName() + "'";
+				flag = true;
+			}
+		}
+		if (student.getGender() != null) {
+			if (flag) {
+				sql += " and gender =" + "'" + student.getGender() + "'";
+			} else {
+				sql += "gender =" + "'" + student.getGender() + "'";
+				flag = true;
+			}
+		}
+		if (student.getAge() != 0) {
+			if (flag) {
+				sql += " and age =" + student.getAge();
+			} else {
+				sql += "age =" + student.getAge();
+				flag = true;
+			}
+		}
+		if (student.getCity() != null) {
+			if (flag) {
+				sql += " and city =" + "'" + student.getCity() + "'";
+			} else {
+				sql += "city =" + "'" + student.getCity() + "'";
+				flag = true;
+			}
+		}
+		if (student.getState() != null) {
+			if (flag) {
+				sql += " and state =" + "'" + student.getState() + "'";
+			} else {
+				sql += "state =" + "'" + student.getState() + "'";
+				flag = true;
+			}
 		}
 
 		System.out.println(sql);

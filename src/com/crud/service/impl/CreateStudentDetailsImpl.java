@@ -44,8 +44,30 @@ public class CreateStudentDetailsImpl implements CreateStudentDetails {
 
 	@Override
 	public boolean addStudentByRequiredDetails(int rollNo, String firstName, String lastName) {
-		// TODO Auto-generated method stub
-		return false;
+		int result = 0;
+		Connection con = ConnectionProvider.getConnection();
+		String sql = "INSERT INTO STUDENT(firstName,lastName,rollNo) VALUES(?,?,?)";
+		try {
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, firstName);
+			ps.setString(2, lastName);
+			ps.setInt(3, rollNo);
+						
+			result = ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Adding student exception " + e.getMessage());
+		} finally {
+			if(con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					System.out.println("Error at the time of Connection close " + e.getMessage());
+				}
+			}
+		} 
+
+		return (result > 0) ? true : false;
 	}
 
 }
